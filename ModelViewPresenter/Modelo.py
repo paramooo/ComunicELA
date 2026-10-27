@@ -293,13 +293,16 @@ class Modelo:
 
 
 
-    def cambiar_idioma(self):
+    def cambiar_idioma(self, idioma=None):
         """
         Función que cambia el idioma de la aplicación
 
         """
 
-        idioma = "gal_ES" if self.get_idioma() == "es_ES" else "es_ES"
+        idiomas = ("es_ES", "gal_ES", "en_US")
+        if idioma not in idiomas:
+            actual = self.get_idioma()
+            idioma = idiomas[(idiomas.index(actual) + 1) % len(idiomas)] if actual in idiomas else idiomas[0]
         with open(self.config_path, 'r') as f:
             config = json_load(f)
         config["idioma"] = idioma
@@ -333,17 +336,9 @@ class Modelo:
         idiomas = {
             "es_ES": "Español",
             "gal_ES": "Galego",
+            "en_US": "English",
         }
-        return idiomas.get(self.get_idioma(), "Galego")
-
-
-
-    def get_idioma_imagen(self):
-        """
-        Devuelve la imagen del idioma actual
-
-        """
-        return get_recurso(f'imagenes/idiomas/{self.get_idioma()}.png')
+        return idiomas.get(self.get_idioma(), "Español")
     
 
 
@@ -1144,6 +1139,7 @@ class Modelo:
             idioma = self.get_idioma()
             filename = get_recurso(f'tableros/tableros_{idioma}.xlsx')
             if os_path.isfile(filename):
+                self.tableros = {}
                 wb = load_workbook(filename)
                 for sheet_name in wb.sheetnames:
                     ws = wb[sheet_name]
@@ -1248,16 +1244,19 @@ class Modelo:
         frase_mod = None
 
         if self.modelo_gemini is not None:
-            prompt = ("Recibes una frase con palabras en infinitivo y el idioma en el que está escrita(Español o Gallego)." +
-                    "Tu tarea es conjugar la frase para que las palabras estén en la forma correcta y coherente entre sí siendo coherente también con el idioma.\n" +
-                    "No se permiten signos de puntuación, solo palabras y el simbolo de interrogación(esto solamente en caso de que se añada en el input).\n"+
-                    "Devuelve SOLAMENTE la frase conjugada en la forma más previsible posible que crees que significa lo que quiera decir.\n"+
-                    "Si la frase tiene solamente una palabra, puedes agregar un determinante si es necesario.\n"+
-                    "Ejemlo 1 (es): Entrada: TÚ COMER CARNE?\nRespuesta: ¿Tú comes carne?"+
-                    "Ejemlo 2 (es): Entrada: YO QUERER COMER CARNE\nRespuesta: Yo quiero comer carne"+
-                    "Ejemlo 3 (gal): Entrada: EU NECESITAR VER DOUTOR\nRespuesta: Eu necesito ver ao doutor"+
-                    "Ejmplo 4 (gal): Entrada: EU QUERER TI MOITO\nRespuesta: Eu quérote moito"+
-                    "\n\nFrase: " + frase + "\nIdioma: " + self.get_idioma())
+            prompt = (
+                "You receive a sequence of words, often in the infinitive, written in one of these supported languages: "
+                "Spanish (es_ES), Galician (gal_ES), or English (en_US). "
+                "Rewrite it as the most natural and predictable sentence in the requested language, without translating it. "
+                "Preserve the intended meaning and return only the corrected sentence, with no explanation. "
+                "Do not add punctuation except question marks when the input is a question. "
+                "If the input contains only one word, you may add a determiner when necessary.\n"
+                "Examples:\n"
+                "Spanish: YO QUERER COMER -> Yo quiero comer\n"
+                "Galician: EU QUERER COMER -> Eu quero comer\n"
+                "English: I WANT EAT -> I want to eat\n\n"
+                f"Input: {frase}\nLanguage: {self.get_idioma_string()}"
+            )
             try:
                 frase_mod = self.modelo_gemini.interactions.create(
                     model='gemini-3.5-flash-lite',

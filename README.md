@@ -1,70 +1,68 @@
 <div align="center">
-  <img src="imagenes/logo.png" alt="Logotipo de ComunicELA" width="160">
+  <img src="imagenes/logo.png" alt="ComunicELA logo" width="160">
   <h1>ComunicELA</h1>
-  <p><strong>CAA basada en seguimiento de la mirada y tableros pictográficos.</strong></p>
+  <p><strong>AAC through gaze estimation and pictographic boards.</strong></p>
   <p>
-    <img src="https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-3776AB?logo=python&logoColor=white" alt="Python 3.10, 3.11 y 3.12">
-    <img src="https://img.shields.io/badge/Plataforma-Windows-0078D4?logo=windows11&logoColor=white" alt="Plataforma Windows">
-    <img src="https://img.shields.io/badge/Código-GPLv3-3DA639" alt="Código bajo licencia GPLv3">
+    <img src="https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-3776AB?logo=python&logoColor=white" alt="Python 3.10, 3.11 and 3.12">
+    <img src="https://img.shields.io/badge/Platform-Windows-0078D4?logo=windows11&logoColor=white" alt="Windows platform">
+    <img src="https://img.shields.io/badge/License-GPLv3-3DA639" alt="GPLv3 licensed source code">
   </p>
 </div>
 
-## Descripción
+## Overview
 
-ComunicELA es una aplicación de escritorio de comunicación aumentativa y alternativa (CAA) concebida para ofrecer una vía de interacción accesible a personas con dificultades motoras o del habla. A partir de una cámara convencional, transforma la dirección de la mirada y el parpadeo en acciones dentro de una interfaz visual basada en pictogramas.
+ComunicELA is an augmentative and alternative communication (AAC) desktop application designed to provide an accessible means of interaction for people with motor or speech impairments. Using a conventional camera, it turns gaze direction and blinking into actions within a visual, pictogram-based interface.
 
-El sistema combina visión por computador y un modelo de estimación de la mirada. El usuario puede navegar entre tableros, seleccionar conceptos, construir mensajes y reproducirlos mediante síntesis de voz. El modelo también puede reentrenarse para adaptarse a las características de cada persona.
+The system combines computer vision with a gaze-estimation model that can be retrained to suit individual needs. It enables navigation through communication boards, concept selection, message composition and speech output through Windows text-to-speech.
 
-La experiencia principal funciona de forma local y no depende de servicios externos. Como complemento opcional, ComunicELA puede utilizar Google Gemini para convertir las palabras seleccionadas en una frase conjugada y natural antes de enviarla al sintetizador de voz. Los tableros son personalizables, permitiendo ampliar o adaptar el vocabulario sin modificar el código de la aplicación.
+The core application runs locally and does not rely on external services. Google Gemini can optionally transform selected words into a natural, grammatically correct sentence before passing it to the speech synthesiser. Communication boards are editable, allowing the vocabulary to be extended or adapted without modifying the source code.
 
-La descripción completa del análisis, diseño, implementación y evaluación del sistema está disponible en la [memoria técnica de ComunicELA](ComunicELA.pdf).
+The complete analysis, design, implementation and evaluation of the system are available in the [ComunicELA technical report](ComunicELA.pdf).
 
 <div align="center">
-  <img src="imagenes/PantallaTablero.png" alt="Tablero pictográfico de ComunicELA" width="72%">
+  <img src="imagenes/PantallaTablero.png" alt="ComunicELA pictographic communication board" width="72%">
   <br>
-  <sub>Tablero pictográfico para la composición y reproducción de mensajes.</sub>
+  <sub>Pictographic board used to compose and play messages.</sub>
 </div>
 
-## Funcionalidades principales
+## Key features
 
-- Control de la interfaz mediante la mirada y el parpadeo.
-- Calibración del parpadeo.
-- Reentrenamiento del modelo para mejorar su adaptación al usuario.
-- Construcción de frases a partir de pictogramas.
-- Lectura de las frases mediante síntesis de voz de Windows.
-- Tableros editables.
-- Interfaz disponible en español y gallego.
-- Corrección y conjugación opcional de frases con Google Gemini.
+- Gaze- and blink-based interface control.
+- Blink calibration.
+- Model retraining for improved user adaptation.
+- Sentence composition using pictograms.
+- Message playback through Windows text-to-speech.
+- Editable communication boards.
+- Spanish, Galician and English interfaces and boards.
+- Optional sentence correction and conjugation with Google Gemini.
 
 ---
 
-## Puesta en marcha
+## Getting started
 
-### Requisitos
+### Requirements
 
-- Windows 10 u 11.
-- Python 3.10, 3.11 o 3.12.
-- Cámara web.
-- Una voz compatible con el sistema de síntesis de voz de Windows.
-- Conexión a Internet y una clave de Gemini únicamente si se desea utilizar el conjugador automático.
+- Windows 10 or 11 with Python 3.10/11/12.
+- Standard webcam.
+- Internet connection and Gemini API key (optional).
 
-### Instalación y ejecución
+### Installation and execution
 
-1. Crea y activa un entorno virtual desde PowerShell, en la carpeta del proyecto:
+1. Create and activate a virtual environment from PowerShell in the project directory:
 
 ```powershell
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 ```
 
-2. Instala las dependencias:
+2. Install the dependencies:
 
 ```powershell
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 ```
 
-3. Inicia la aplicación:
+3. Start the application:
 
 ```powershell
 python main.py
@@ -72,75 +70,75 @@ python main.py
 
 ---
 
-## Configuración opcional de Gemini
+## Optional Gemini configuration
 
-ComunicELA puede utilizar Google Gemini para convertir la secuencia de palabras seleccionada en una oración más natural antes de reproducirla. Esta integración es opcional: sin una clave API, el resto de la aplicación continúa funcionando con normalidad.
+ComunicELA can use Google Gemini to convert a sequence of selected words into a more natural sentence before it is spoken. This integration is optional. Without an API key, the rest of the application continues to work normally.
 
-### Obtener una clave API
+### Obtain an API key
 
-Genera una clave desde [Google AI Studio](https://aistudio.google.com/app/apikey).
+Generate a key in [Google AI Studio](https://aistudio.google.com/app/apikey).
 
-### Configurar la clave en Windows
+### Configure the key in Windows
 
-1. Abre el menú Inicio de Windows y busca **Variables de entorno**.
-2. Selecciona **Editar las variables de entorno del sistema**.
-3. Pulsa **Variables de entorno**.
-4. En **Variables de usuario**, selecciona **Nueva**.
-5. Introduce `GOOGLE_API_KEY` como nombre de la variable.
-6. Introduce la clave API como valor y guarda los cambios.
-7. Cierra y vuelve a abrir la aplicación.
-
----
-
-## Personalización de tableros
-
-Los tableros se definen mediante archivos `.xlsx`.
-
-### Archivos disponibles
-
-| Archivo | Idioma |
-| --- | --- |
-| `tableros/tableros_es_ES.xlsx` | Español |
-| `tableros/tableros_gal_ES.xlsx` | Gallego |
-
-Cada hoja del libro representa un tablero distinto. La primera pantalla que se muestra corresponde a la hoja `TAB. INICIAL`.
-
-### Formato de las casillas
-
-Cada casilla del tablero utiliza dos columnas consecutivas:
-
-| Columna | Contenido |
-| --- | --- |
-| Primera | Nombre del archivo del pictograma. |
-| Segunda | Palabra o mensaje mostrado en la interfaz. |
-
-Los archivos de imagen compartidos por ambos idiomas se encuentran en `tableros/pictogramas`.
-
-### Añadir o sustituir un pictograma
-
-1. Copia la nueva imagen en `tableros/pictogramas`.
-2. Abre el archivo del tablero que quieras modificar.
-3. Escribe el nombre del archivo de imagen en la primera columna de la casilla.
-4. Escribe el texto visible en la segunda columna.
-5. Guarda el libro manteniendo el formato `.xlsx`.
-
-### Enlaces entre tableros
-
-Una casilla se interpreta como un enlace cuando su texto comienza por `TAB. `. El texto completo debe coincidir exactamente con el nombre de otra hoja del mismo libro. Por ejemplo, `TAB. RÁPIDO` abre la hoja denominada `TAB. RÁPIDO`.
-
-> **Recomendación:** incluye en todas las hojas, excepto en `TAB. INICIAL`, una casilla para regresar al tablero inicial.
-
-### Comprobaciones antes de guardar
-
-- No cambies el nombre de `TAB. INICIAL`.
-- Conserva las dos columnas asignadas a cada casilla.
-- Comprueba que los nombres de las imágenes incluyan su extensión y coincidan exactamente con los pictogramas guardados.
-- Mantén sincronizados los enlaces `TAB. ...` con los nombres de las hojas.
-
+1. Open the Windows Start menu and search for **Environment Variables**.
+2. Select **Edit the system environment variables**.
+3. Select **Environment Variables**.
+4. Under **User variables**, select **New**.
+5. Enter `GOOGLE_API_KEY` as the variable name.
+6. Paste the API key as its value and save the changes.
+7. Close and reopen the application.
 
 ---
 
-## Premios y Reconocimientos
+## Customising communication boards
+
+Communication boards are defined in `.xlsx` files.
+
+### Available files
+
+| File | Language |
+| --- | --- |
+| `tableros/tableros_es_ES.xlsx` | Spanish |
+| `tableros/tableros_gal_ES.xlsx` | Galician |
+| `tableros/tableros_en_US.xlsx` | English |
+
+Each worksheet represents a separate board. The first worksheet in the workbook is used as the initial board.
+
+### Cell format
+
+Each board cell uses two consecutive spreadsheet columns:
+
+| Column | Content |
+| --- | --- |
+| First | Pictogram filename. |
+| Second | Word or message displayed in the interface. |
+
+The pictogram files shared by all languages are stored in `tableros/pictogramas`.
+
+### Add or replace a pictogram
+
+1. Copy the new image to `tableros/pictogramas`.
+2. Open the board file you want to edit.
+3. Enter the image filename in the first column of the cell.
+4. Enter the visible label in the second column.
+5. Save the workbook in `.xlsx` format.
+
+### Links between boards
+
+A cell is interpreted as a link when its label starts with `TAB. `. The complete label must exactly match another worksheet name in the same workbook. For example, `TAB. QUICK` opens the worksheet named `TAB. QUICK`.
+
+> **Recommendation:** include a cell that returns to the first board on every other worksheet.
+
+### Checks before saving
+
+- Keep the initial board as the first worksheet.
+- Preserve the two columns assigned to each board cell.
+- Make sure image filenames include their extension and exactly match the files stored in the pictogram directory.
+- Keep every `TAB. ...` link synchronised with its target worksheet name.
+
+---
+
+## Awards and recognition
 
 - **Premio al Mejor TFG Aplicado** – Facultad de Informática, Universidade da Coruña (2025).  
 - **Mención de Honor en los Premios CREAIMPACTO** – Uno de los tres mejores proyectos de España en la categoría Salud (2025).  
@@ -151,7 +149,8 @@ Una casilla se interpreta como un enlace cuando su texto comienza por `TAB. `. E
 
 ---
 
-## Difusión en medios
+## Media coverage
+
 - [LinkedIn - Introducing ComunicELA](https://www.linkedin.com/posts/pabloparamotelle_introducing-comunicela-comunicela-activity-7253848414939955202-dNCy?utm_source=social_share_send&utm_medium=member_desktop_web&rcm=ACoAAByHYYkB_E_HDtRnYXUh-XtJ0k-h_0mzfnQ)
 - [Fundación Universidade da Coruña - Carlota Vázquez e Pablo Páramo reciben o Décimo Premio ao mellor TFG aplicado 2023/24 durante a FepeFIC](https://www.fundacion.udc.es/noticia.asp?id=914&idioma=GA)
 - [El Ideal Gallego - Un estudiante de la UDC, entre los tres mejores de España en los Premios CREAIMPACTO 2025](https://www.elidealgallego.com/articulo/a-coruna/estudiante-udc-entre-tres-mejores-espana-premios-creaimpacto-2025-5349103)  
@@ -174,17 +173,16 @@ Una casilla se interpreta como un enlace cuando su texto comienza por `TAB. `. E
 
 ---
 
+## Licences and attribution
 
-## Licencias y atribuciones
+### Source code
 
-### Código fuente
+The ComunicELA source code is distributed under the [GNU General Public License v3.0](LICENSE).
 
-El código de ComunicELA se distribuye bajo la licencia [GNU General Public License v3.0](LICENSE).
+### Intellectual property registration
 
-### Propiedad intelectual
+ComunicELA is registered as a computer program under registration entry `03/2025/362`. The Universidade da Coruña holds the exploitation rights.
 
-ComunicELA está inscrita como programa de ordenador con el asiento registral `03/2025/362`. Titular de los derechos de explotación: Universidade da Coruña.
+### ARASAAC pictograms
 
-### Pictogramas de ARASAAC
-
-Autor: Sergio Palao · Procedencia: [ARASAAC](https://arasaac.org/) · Licencia: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.es) · Titular: Gobierno de Aragón (España).
+Author: Sergio Palao · Source: [ARASAAC](https://arasaac.org/) · Licence: [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/deed.en) · Owner: Government of Aragon, Spain.

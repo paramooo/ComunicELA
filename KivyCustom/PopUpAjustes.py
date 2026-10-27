@@ -3,7 +3,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.graphics import Color, Rectangle
 from kivy.uix.widget import Widget
-from KivyCustom.Custom import ButtonRnd
+from KivyCustom.Custom import ButtonRnd, CustomSpinner
 from KivyCustom.PopUp import CustPopup
 from kivy.graphics import Line
 
@@ -12,11 +12,12 @@ class PopUpAjustes(ModalView):
     PopUp que muestra el menú flotante de los ajustes de la aplicación.
     
     """
-    def __init__(self, camera_spinner, voz_spinner, boton_gemini,show_tutorial, controlador, **kwargs):
+    def __init__(self, camera_spinner, voz_spinner, boton_gemini, show_tutorial, controlador, on_language_change, **kwargs):
         super(PopUpAjustes, self).__init__(**kwargs)
         self.controlador = controlador
         self.show_tutorial = show_tutorial
-        self.size_hint = (0.5, 0.5)  # Tamaño del popup
+        self.on_language_change = on_language_change
+        self.size_hint = (0.5, 0.6)  # Tamaño del popup
 
         # Crea un layout con un fondo semi-transparente
         layout = BoxLayout(orientation='vertical', padding=[20,20,20,20], spacing=10)
@@ -32,9 +33,8 @@ class PopUpAjustes(ModalView):
         layout.add_widget(self.label_titulo)
         layout.add_widget(Widget(size_hint=(1, 0.05)))
 
-        # Layout para los spinners -> 0.3 de alto
+        # Primera fila: selección de cámara y voz
         layout_botones = BoxLayout(orientation='horizontal', size_hint=(1, 0.3))
-        # Añade los spinners y el botón al layout
 
         layout_camara = BoxLayout(orientation='vertical', size_hint=(0.5, 1))
         self.label_select_camera = Label(text=self.controlador.get_string('seleccion_camara'), font_name='Texto', color=(0, 0, 0, 1), font_size='20sp')
@@ -52,18 +52,37 @@ class PopUpAjustes(ModalView):
         layout.add_widget(layout_botones)
         layout.add_widget(Widget(size_hint=(1, 0.1)))
 
-        layout_gemini = BoxLayout(orientation='vertical', size_hint=(1, 0.4))
-        layout_gemini.add_widget(Widget(size_hint=(1, 0.05)))
-        self.label_gemini = Label(text=self.controlador.get_string('conjugar'), font_name='Texto', color=(0, 0, 0, 1), font_size='20sp', size_hint=(1, 0.1))
+        # Segunda fila: conjugador automático e idioma
+        layout_opciones = BoxLayout(orientation='horizontal', size_hint=(1, 0.3))
+
+        layout_gemini = BoxLayout(orientation='vertical', size_hint=(0.5, 1))
+        self.label_gemini = Label(text=self.controlador.get_string('conjugar'), font_name='Texto', color=(0, 0, 0, 1), font_size='20sp')
         layout_gemini.add_widget(self.label_gemini)
 
-        layout_btns_gemini = BoxLayout(orientation='horizontal', size_hint=(0.5, 0.05), pos_hint={'center_x': 0.5})
+        layout_btns_gemini = BoxLayout(orientation='horizontal', size_hint=(1, 0.55))
         layout_btns_gemini.add_widget(boton_gemini)
-        layout_btns_gemini.add_widget(Widget(size_hint=(0.01, 0.3)))
-        boton_info = ButtonRnd(text="?", size_hint=(0.1, 1), font_name='Texto', font_size='25sp', on_release=self.on_info)
+        layout_btns_gemini.add_widget(Widget(size_hint=(0.05, 1)))
+        boton_info = ButtonRnd(text="?", size_hint=(0.2, 1), font_name='Texto', font_size='25sp', on_release=self.on_info)
         layout_btns_gemini.add_widget(boton_info)
         layout_gemini.add_widget(layout_btns_gemini)
-        layout.add_widget(layout_gemini)
+
+        layout_idioma = BoxLayout(orientation='vertical', size_hint=(0.5, 1))
+        self.label_select_language = Label(text=self.controlador.get_string('seleccion_idioma'), font_name='Texto', color=(0, 0, 0, 1), font_size='20sp')
+        self.language_spinner = CustomSpinner(
+            text=self.controlador.get_idioma_string(),
+            values=('Español', 'Galego', 'English'),
+            size_hint=(1, 0.55),
+            font_name='Texto',
+            font_size='18sp',
+        )
+        self.language_spinner.bind(text=self.on_language)
+        layout_idioma.add_widget(self.label_select_language)
+        layout_idioma.add_widget(self.language_spinner)
+
+        layout_opciones.add_widget(layout_gemini)
+        layout_opciones.add_widget(Widget(size_hint=(0.07, 1)))
+        layout_opciones.add_widget(layout_idioma)
+        layout.add_widget(layout_opciones)
         layout.add_widget(Widget(size_hint=(1, 0.1)))
 
         # Añade un botón para cerrar el popup
@@ -92,3 +111,14 @@ class PopUpAjustes(ModalView):
     def on_tutorial(self, instance):
         self.dismiss()
         self.show_tutorial()
+
+    def on_language(self, instance, language_name):
+        languages = {
+            'Español': 'es_ES',
+            'Galego': 'gal_ES',
+            'English': 'en_US',
+        }
+        language_code = languages.get(language_name)
+        if language_code:
+            self.controlador.cambiar_idioma(language_code)
+            self.on_language_change()

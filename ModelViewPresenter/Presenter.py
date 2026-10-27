@@ -92,11 +92,11 @@ class Presenter:
     
 
 
-    def cambiar_idioma(self):
+    def cambiar_idioma(self, idioma=None):
         """
         Comunica con el modelo para cambiar el idioma
         """
-        self.modelo.cambiar_idioma()
+        self.modelo.cambiar_idioma(idioma)
 
 
 
@@ -106,13 +106,6 @@ class Presenter:
         """
         return self.modelo.get_idioma_string()
     
-
-
-    def get_idioma_imagen(self):
-        """
-        Comunica con el modelo para obtener la imagen del idioma actual
-        """
-        return self.modelo.get_idioma_imagen()
 
 
 # ------------------------------------- FUNCIONES PARA EL MANEJO GENERAL ------------------------
@@ -242,9 +235,17 @@ class Presenter:
         """
         self.vista.inicio.camera_spinner.values = [self.get_string('camara_principal') if i == 0 else self.get_string('camara') + str(i) for i in camaras] + [self.get_string('actualizar_camaras')]
         if self.modelo.camara_act is not None:
-            self.vista.inicio.camera_spinner.text = self.get_string('camara') + (str(self.modelo.camara_act) if self.modelo.camara_act != 0 else 'principal')
+            if self.modelo.camara_act == 0:
+                self.vista.inicio.camera_spinner.text = self.get_string('camara_principal')
+            else:
+                self.vista.inicio.camera_spinner.text = self.get_string('camara') + str(self.modelo.camara_act)
         else:
             self.vista.inicio.camera_spinner.text = self.get_string('btn_inicioDes_seleccionarCam')
+
+
+    def actualizar_textos_camaras(self):
+        """Actualiza las opciones del selector sin volver a detectar cámaras."""
+        self._actualizar_spinner(self.modelo.camaras)
 
 
     def seleccionar_camara(self, camara):

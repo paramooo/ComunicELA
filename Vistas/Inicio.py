@@ -5,7 +5,6 @@ from kivy.uix.boxlayout import BoxLayout
 from KivyCustom.Custom import ButtonRnd, CustomSpinner
 from kivy.clock import Clock
 from kivy.graphics.texture import Texture
-from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.boxlayout import BoxLayout
 from kivy.core.window import Window
@@ -30,21 +29,7 @@ class Inicio(Screen):
         # Alineamos horizontalmente para separar en dos
         Principal = BoxLayout(orientation='vertical', padding=20)
 
-        TituloIdioma = BoxLayout(orientation='horizontal', size_hint=(1, 0.2))
-
-        titulo = Label(text='ComunicELA', font_size='100sp', halign='center', color=(1, 1, 1, 1), size_hint=(0.85, 1), font_name='Titulo')
-
-        idioma = BoxLayout(orientation='vertical', size_hint=(0.05, 1))
-
-        self.imagenIdioma = Button(
-            background_normal=self.controlador.get_idioma_imagen(),
-            background_down=self.controlador.get_idioma_imagen(),  # Mantén la imagen al hacer clic
-            background_color=(1, 1, 1, 1),  # Color de fondo transparente
-            size_hint=(1, 0.8)
-        )        
-        self.imagenIdioma.bind(on_release=self.on_idioma_click)
-
-        self.textIdioma = Label(text=self.controlador.get_idioma_string(), font_size='22sp', halign='center', valign='middle', color=(1, 1, 1, 1), size_hint=(1, 0.5), font_name='Texto')
+        titulo = Label(text='ComunicELA', font_size='100sp', halign='center', color=(1, 1, 1, 1), size_hint=(1, 0.2), font_name='Titulo')
 
         caja = BoxLayout(orientation='horizontal', size_hint=(1, 0.8))
 
@@ -103,7 +88,14 @@ class Inicio(Screen):
        
         self.image_box = Image(size_hint=(0.7, 0.7), pos_hint={'center_x': 0.5} )
 
-        self.popajustes = PopUpAjustes(self.camera_spinner, self.voz_spinner, self.boton_gemini, self.show_tutorial, self.controlador)
+        self.popajustes = PopUpAjustes(
+            self.camera_spinner,
+            self.voz_spinner,
+            self.boton_gemini,
+            self.show_tutorial,
+            self.controlador,
+            self.actualizar_idioma,
+        )
         self.boton_popajustes = ButtonRnd(text=self.controlador.get_string('ajustes'), size_hint=(0.6, 0.1), on_press=lambda x: self.popajustes.open(), font_name='Texto', font_size=self.controlador.get_font_txts(), pos_hint={'center_x': 0.5})
 
         # Montamos la estructura
@@ -122,16 +114,7 @@ class Inicio(Screen):
         
         caja.add_widget(self.Izquierda)
         caja.add_widget(Derecha)
-        idioma.add_widget(Widget(size_hint_y=0.1))
-        idioma.add_widget(self.imagenIdioma)
-        idioma.add_widget(self.textIdioma)
-        idioma.add_widget(Widget(size_hint_y=0.6))
-        TituloIdioma.add_widget(Widget(size_hint_x=0.1))
-        TituloIdioma.add_widget(titulo)
-        TituloIdioma.add_widget(idioma)
-        TituloIdioma.add_widget(Widget(size_hint_x=0.02))
-
-        Principal.add_widget(TituloIdioma)
+        Principal.add_widget(titulo)
         
         Principal.add_widget(caja)
 
@@ -231,10 +214,10 @@ class Inicio(Screen):
         """
         Se acciona al seleccionar una cámara, actualiza la cámara seleccionada.
         """
-        if text.startswith(self.controlador.get_string('camara')):
-            camara = text.split(' ')[1]
-            if camara == self.controlador.get_string('principal'):
-                camara = 0
+        if text == self.controlador.get_string('camara_principal'):
+            self.controlador.seleccionar_camara(0)
+        elif text.startswith(self.controlador.get_string('camara')):
+            camara = text.removeprefix(self.controlador.get_string('camara'))
             self.controlador.seleccionar_camara(int(camara))
         elif text == self.controlador.get_string('actualizar_camaras'):
             self.controlador.seleccionar_camara(None)
@@ -299,14 +282,10 @@ class Inicio(Screen):
         self._keyboard_closed()
 
 
-    def on_idioma_click(self, *args):
+    def actualizar_idioma(self, *args):
         """
-        Actualiza el idioma al hacer clic en el icono del mismo.
+        Actualiza los textos visibles después de cambiar el idioma.
         """
-        self.controlador.cambiar_idioma()
-        imagen = self.controlador.get_idioma_imagen()
-        self.imagenIdioma.background_normal = imagen
-        self.textIdioma.text = self.controlador.get_idioma_string()
         self.btn_cal.text = self.controlador.get_string('btn_inicio_calibrar')
         self.btn_ree.text = self.controlador.get_string('btn_inicio_reentrenar')
         self.btn_tab.text = self.controlador.get_string('btn_inicio_tableros')
@@ -328,4 +307,8 @@ class Inicio(Screen):
         self.popajustes.label_select_voz.text = self.controlador.get_string('seleccion_voz')
         self.popajustes.label_gemini.text = self.controlador.get_string('conjugar')
         self.popajustes.label_titulo.text = self.controlador.get_string('ajustes')
+        self.popajustes.label_select_language.text = self.controlador.get_string('seleccion_idioma')
+        self.popajustes.language_spinner.text = self.controlador.get_idioma_string()
         self.popajustes.tutorial_button.text = self.controlador.get_string('tutorial')
+        self.controlador.actualizar_textos_camaras()
+        self.get_voces()

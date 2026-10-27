@@ -26,6 +26,7 @@
     "ajustes": "Configuración",
     "seleccion_camara" : "Seleccione unha cámara",
     "seleccion_voz" : "Seleccione unha voz",
+    "seleccion_idioma" : "Seleccione un idioma",
     "info_gemini": "Para poder conxugar as frases automaticamente, asegúrese de ter conexión a internet e siga as instrucións da documentación para configurar a API de Google Gemini.",
 
 
@@ -105,4 +106,4 @@
 
 
 
-}   
+}

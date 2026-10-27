@@ -123,6 +123,11 @@ class Tableros(Screen):
         """
         Establece el tablero inicial antes de entrar en la pantalla.
         """
+        self.btn_inicio.text = self.controlador.get_string("inicio")
+        self.btn_borrar_palabra.text = self.controlador.get_string("borrar")
+        self.btn_borrar_todo.text = self.controlador.get_string("borrar_todo")
+        self.btn_reproducir.text = self.controlador.get_string("reproducir")
+        self.btn_alarma.text = self.controlador.get_string("alarma")
         tab_incial = self.controlador.obtener_tablero_inicial()
         self.cambiar_tablero(self.controlador.obtener_tablero(tab_incial))
         self.label.text = self.controlador.get_frase()
