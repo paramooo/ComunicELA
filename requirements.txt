@@ -1,0 +1,16 @@
+matplotlib==3.10.9
+mediapipe==0.10.21
+numpy==1.26.4
+opencv-contrib-python==4.11.0.86
+openpyxl==3.1.5
+optuna==5.0.0
+pillow==12.3.0
+pygame==2.6.1
+pywin32==312
+scipy==1.15.3
+kivy==2.3.1
+google-genai==2.33.0
+httpx==0.28.1
+protobuf==4.25.9
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch==2.2.2+cu121
