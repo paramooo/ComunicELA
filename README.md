@@ -5,7 +5,12 @@
   <p>
     <img src="https://img.shields.io/badge/Python-3.10%20%7C%203.11%20%7C%203.12-3776AB?logo=python&logoColor=white" alt="Python 3.10, 3.11 and 3.12">
     <img src="https://img.shields.io/badge/Platform-Windows-0078D4?logo=windows11&logoColor=white" alt="Windows platform">
-    <img src="https://img.shields.io/badge/License-GPLv3-3DA639" alt="GPLv3 licensed source code">
+    <a href="LICENSE">
+      <img src="https://img.shields.io/badge/License-GPLv3-3DA639" alt="GPLv3 licensed source code">
+    </a>
+    <a href="https://doi.org/10.5281/zenodo.23699295">
+      <img src="https://zenodo.org/badge/1436039120.svg" alt="DOI: 10.5281/zenodo.23699295">
+    </a>
   </p>
 </div>
 
