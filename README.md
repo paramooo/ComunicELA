@@ -9,7 +9,7 @@
       <img src="https://img.shields.io/badge/License-GPLv3-3DA639" alt="GPLv3 licensed source code">
     </a>
     <a href="https://doi.org/10.5281/zenodo.23699295">
-      <img src="https://zenodo.org/badge/1436039120.svg" alt="DOI: 10.5281/zenodo.23699295">
+      <img src="https://zenodo.org/badge/1436039120.svg" alt="DOI: 10.5281/zenodo.23699296">
     </a>
   </p>
 </div>
